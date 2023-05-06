@@ -1,6 +1,6 @@
-import json
 from xml_processor import parse_xml
 from converter import convert_raw_question_to_data
+from xml_generator import generate_xml
 
 raw_question_list = parse_xml("data.xml")
 
@@ -36,10 +36,11 @@ for title in grouped_questions:
 # count question for each title
 for title in grouped_questions:
     count = len(grouped_questions[title])
-    if count % 5 != 0:
-        print(title, count)
+    print(title, count)
 
 print("Total questions: ", len(processed_question_list))
 
-with open("data.json", "w") as f:
-    json.dump(grouped_questions, f, indent=4)
+for title in grouped_questions:
+    generate_xml(grouped_questions[title], title)
+
+    
