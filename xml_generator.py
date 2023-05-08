@@ -58,7 +58,7 @@ def generate_xml(question_obj_list, group):
 
     category = ET.SubElement(question_category, 'category')
     category_text = ET.SubElement(category, 'text')
-    category_text.text = group
+    category_text.text = "$system$/top/" + group
 
     for question_obj in question_obj_list:
         english_question = is_english(question_obj['title'])
@@ -75,11 +75,14 @@ def generate_xml(question_obj_list, group):
         
         content = question_obj['content']
 
-        question_text.text = ET.CDATA(content) if is_html(content) else content
+        question_text_text = ET.SubElement(question_text, 'text')
+        question_text_text.text = ET.CDATA(content) if is_html(content) else content
 
         general_feedback = ET.SubElement(question, 'generalfeedback')
         general_feedback.set('format', "html")
-        general_feedback.text = ET.CDATA("Feedback")
+        
+        general_feedback_text = ET.SubElement(general_feedback, 'text')
+        general_feedback_text.text = ET.CDATA("Feedback")
     
         default_grade = ET.SubElement(question, 'defaultgrade')
         default_grade.text = "1.0000000" if english_question else "4.0000000"
@@ -107,15 +110,21 @@ def generate_xml(question_obj_list, group):
 
         correctfeedback = ET.SubElement(question, 'correctfeedback')
         correctfeedback.set('format', "html")
-        correctfeedback.text = ET.CDATA("Answer is correct")
+
+        correctfeedback_text = ET.SubElement(correctfeedback, 'text')
+        correctfeedback_text.text = ET.CDATA("Answer is correct")
 
         partiallycorrectfeedback = ET.SubElement(question, 'partiallycorrectfeedback')
         partiallycorrectfeedback.set('format', "html")
-        partiallycorrectfeedback.text = ET.CDATA("Answer is partially correct")
+
+        partiallycorrectfeedbackText = ET.SubElement(partiallycorrectfeedback, 'text')
+        partiallycorrectfeedbackText.text = ET.CDATA("Answer is partially correct")
 
         incorrectfeedback = ET.SubElement(question, 'incorrectfeedback')
         incorrectfeedback.set('format', "html")
-        incorrectfeedback.text = ET.CDATA("Answer is incorrect")
+
+        incorrectfeedbackText = ET.SubElement(incorrectfeedback, 'text')
+        incorrectfeedbackText.text = ET.CDATA("Answer is incorrect")
 
         ET.SubElement(question, 'shownumcorrect')
 
@@ -136,7 +145,7 @@ def generate_xml(question_obj_list, group):
 
             ET.SubElement(answer_feedback, 'text')
 
-    et.write("./categories/" + group + ".xml", encoding='utf-8', xml_declaration=True)
+    et.write("../categories/" + group + ".xml", encoding='utf-8', xml_declaration=True)
 
 if __name__ == "__main__":
     key = "questions"
