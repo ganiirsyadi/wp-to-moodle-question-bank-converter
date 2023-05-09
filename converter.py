@@ -72,8 +72,6 @@ def convert_raw_question_to_data(question_raw_obj: object):
 
         final_question["title"] = title
 
-        print(final_question["options"])
-
         return final_question
     except Exception as e:
         raise e
